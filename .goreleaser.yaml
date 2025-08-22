@@ -18,8 +18,8 @@ builds:
 
 brews:
   - name: kd-gen
-    tap:
-      owner: khuong02   # your GitHub username or org
+    repository:
+      owner: khuong02   # your GitHub username
       name: homebrew-tap
     commit_author:
       name: goreleaserbot
