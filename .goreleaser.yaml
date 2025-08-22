@@ -16,6 +16,19 @@ builds:
       - windows
       - darwin
 
+brews:
+  - name: kd-gen
+    tap:
+      owner: khuong02   # your GitHub username or org
+      name: homebrew-tap
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    homepage: "https://github.com/khuong02/kd-gen"
+    description: "A Go code generator for enums."
+    license: "MIT"
+
+
 archives:
   - formats: [tar.gz]
     name_template: >-
