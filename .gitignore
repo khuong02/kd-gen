@@ -1,0 +1,5 @@
+**/*.local.yaml
+**/*.local.yml
+.idea/
+# Added by goreleaser init:
+dist/

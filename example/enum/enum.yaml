@@ -1,0 +1,27 @@
+enums:
+  - name: Lang
+    type: string
+    values:
+      - name: LangEnglish
+        display: "English"
+        code: "en"
+      - name: LangVietnamese
+        display: "Vietnamese"
+        code: "vi"
+      - name: LangFrench
+        display: "French"
+        code: "fr"
+      - name: LangSpanish
+        display: "Spanish"
+        code: "es"
+      - name: LangChinese
+        display: "Chinese"
+        code: "zh"
+  - name: LogLevel
+    type: int
+    values:
+      - name: Debug
+      - name: Info
+      - name: Warn
+      - name: Error
+      - name: Fatal
