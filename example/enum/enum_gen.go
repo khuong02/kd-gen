@@ -3,6 +3,8 @@
 package core
 
 import (
+	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -83,6 +85,28 @@ func ParseLang(s string) (Lang, error) {
 		return LangChinese, nil
 	}
 	return "", fmt.Errorf("invalid Lang: %s", s)
+}
+
+func (x Lang) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x)
+}
+func (x *Lang) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (x Lang) Value() (driver.Value, error) {
+	return json.Marshal(x)
+}
+func (x *Lang) Scan(value interface{}) error {
+	var v Lang
+	if err := json.Unmarshal(value.([]byte), &v); err != nil {
+		return err
+	}
+	return nil
 }
 
 type LogLevel int
