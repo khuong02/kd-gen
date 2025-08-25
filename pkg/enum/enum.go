@@ -17,6 +17,8 @@ const (
 	String    Method = "string"
 	Parse     Method = "parse"
 	Normalize Method = "normalize"
+	JSON      Method = "json"
+	SQL       Method = "sql"
 )
 
 var MethodMap = map[Method]MethodFunc{
@@ -33,6 +35,12 @@ var MethodMap = map[Method]MethodFunc{
 			return
 		}
 		e.Normalize(name)
+	},
+	JSON: func(e *Enum, name string, enumType string, values []config.EnumValue) {
+		e.JSON(name)
+	},
+	SQL: func(e *Enum, name string, enumType string, values []config.EnumValue) {
+		e.SQLValueScan(name)
 	},
 }
 
@@ -84,243 +92,12 @@ func emptyValue(enumType string) interface{} {
 	}
 }
 
-func (e *Enum) Consts(name, enumType string, values []config.EnumValue) {
-	f := e.f
-	defer f.Line()
-	f.Const().DefsFunc(func(g *jen.Group) {
-		switch enumType {
-		case "string":
-			for _, v := range values {
-				display := displayValue(v.Display, v.Name)
-				g.Id(v.Name).Id(name).Op("=").Lit(display)
-			}
-
-		case "int", "int8", "int16", "int32", "int64",
-			"uint", "uint8", "uint16", "uint32", "uint64":
-			for i, v := range values {
-				if i == 0 {
-					// use iota for auto-increment
-					g.Id(v.Name).Id(name).Op("=").Iota()
-				} else {
-					g.Id(v.Name)
-				}
-			}
-
-		case "float32", "float64":
-			for i, v := range values {
-				// Floats cannot use iota in the same way, so just assign index as float
-				g.Id(v.Name).Id(name).Op("=").Lit(float64(i))
-			}
-
-		default:
-			panic("unsupported enum type: " + enumType)
-		}
-	})
-}
-
-func (e *Enum) String(name string, enumType string, values []config.EnumValue) {
-	f := e.f
-	defer f.Line()
-	// --------------------
-	// string function
-	// This function returns the string representation of the enum value.
-	// If the value is not found, it returns "UNKNOWN".
-	// --------------------
-	f.Func().
-		Params(jen.Id("x").Id(name)).
-		Id("String").
-		Params().
-		String().
-		Block(
-			jen.Switch(jen.Id("x")).BlockFunc(func(g *jen.Group) {
-				for _, v := range values {
-					g.Case(jen.Id(v.Name)).Return(jen.Lit(displayValue(v.Display, v.Name)))
-				}
-			}),
-			jen.Return(jen.Lit("UNKNOWN")),
-		)
-}
-
-func (e *Enum) Parse(name, enumType string, values []config.EnumValue) {
-	f := e.f
-	defer f.Line()
-	// --------------------
-	// ParseXXX function
-	// --------------------
-	f.Func().
-		Id("Parse"+name).
-		Params(jen.Id("s").String()).
-		Params(jen.Id(name), jen.Error()).
-		Block(
-			jen.Switch(jen.Id("s")).BlockFunc(func(g *jen.Group) {
-				for _, v := range values {
-					g.Case(jen.Lit(displayValue(v.Display, v.Name))).Return(jen.Id(v.Name), jen.Nil())
-				}
-			}),
-			jen.Return(
-				jen.Lit(emptyValue(enumType)),
-				jen.Qual("fmt", "Errorf").Call(
-					jen.Lit("invalid "+name+": %s"), jen.Id("s"),
-				),
-			),
-		)
-}
-
-func (e *Enum) Slice(name, enumType string, values []config.EnumValue) {
-	f := e.f
-	defer f.Line()
-	// --------------------
-	// Slice: all values
-	// --------------------
-	f.Var().Id("All" + name + "s").
-		Op("=").
-		Index().Id(name).
-		ValuesFunc(func(g *jen.Group) {
-			for idx, v := range values {
-				if idx == len(values)-1 {
-					g.Line().Id(v.Name).Op(",").Line()
-					continue
-				}
-				g.Line().Id(v.Name)
-			}
-		})
-}
-
-func (e *Enum) Map(name, enumType string, values []config.EnumValue) {
-	f := e.f
-	defer f.Line()
-	// --------------------
-	// Optional: Map if Code is set
-	// --------------------
-	hasCode := false
-	for _, v := range values {
-		if v.Code != nil {
-			hasCode = true
-			break
-		}
-	}
-
-	if hasCode {
-		f.Var().Id(name + "Map").
-			Op("=").
-			Map(jen.Id(name)).Interface().
-			ValuesFunc(func(g *jen.Group) {
-				for _, v := range values {
-					if v.Code == nil {
-						continue
-					}
-					isLast := v == values[len(values)-1]
-					switch c := v.Code.(type) {
-					case string:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Lit(c)
-					case int:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Lit(c)
-					case bool:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Lit(c)
-					case []string:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Index().String().ValuesFunc(func(arr *jen.Group) {
-							for _, s := range c {
-								arr.Lit(s)
-							}
-						})
-					case []float64:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Index().Float64().ValuesFunc(func(arr *jen.Group) {
-							for _, f := range c {
-								arr.Lit(f)
-							}
-						})
-					case []int64:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Index().Int64().ValuesFunc(func(arr *jen.Group) {
-							for _, n := range c {
-								arr.Lit(n)
-							}
-						})
-					case []int:
-						if isLast {
-							g.Line().Id(v.Name).Op(":").Lit(c).Op(",").Line()
-							continue
-						}
-						g.Line().Id(v.Name).Op(":").Index().Int().ValuesFunc(func(arr *jen.Group) {
-							for _, n := range c {
-								arr.Lit(n)
-							}
-						})
-					}
-				}
-			})
-	}
-}
-
-func (e *Enum) Normalize(name string) {
-	f := e.f
-	defer f.Line()
-	// --------------------
-	// Normalize function
-	// --------------------
-	f.Func().
-		Params(jen.Id("x").Id(name)).
-		Id("Normalize").
-		Params().
-		Id(name).
-		Block(
-			jen.Return(
-				jen.Id(name).Call(
-					jen.Qual("strings", "ToLower").Call(
-						jen.String().Parens(jen.Id("x")),
-					),
-				),
-			),
-		)
-}
-
-func (e *Enum) Is(name, enumType string, values []config.EnumValue) {
-	f := e.f
-	defer f.Line()
-	// --------------------
-	// IsX checks whether the enum equals a specific value
-	// --------------------
-	for _, v := range values {
-		f.Func().
-			Params(jen.Id("x").Id(name)).
-			Id(fmt.Sprintf("Is%s", v.Name)).
-			Params().
-			Id("bool").
-			Block(
-				jen.Return(
-					jen.Id("x").Op("==").Id(v.Name),
-				),
-			)
-	}
-}
-
 func (e *Enum) Method(name, enumType string, values []config.EnumValue, methods ...string) {
 	for _, m := range methods {
 		if fn, ok := MethodMap[Method(strings.ToLower(m))]; ok {
 			fn(e, name, enumType, values)
+		} else {
+			fmt.Printf("don't support method %s\n", m)
 		}
 	}
 }
@@ -329,7 +106,7 @@ func (e *Enum) Enum(name, enumType string, values []config.EnumValue, methods []
 	f := e.f
 	f.Type().Id(name).Id(enumType)
 	e.Consts(name, enumType, values)
-	e.Is(name, enumType, values)
+	e.Is(name, values)
 	e.Map(name, enumType, values)
 	e.Slice(name, enumType, values)
 	e.Method(name, enumType, values, methods...)

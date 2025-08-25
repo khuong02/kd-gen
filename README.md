@@ -14,7 +14,7 @@ It helps you create type-safe enums with string representations, parsing functio
 
 ### v2 — Ecosystem Integration
 
-- [ ] JSON/YAML support (MarshalJSON, UnmarshalJSON, MarshalYAML, UnmarshalYAML)
+- [ ] JSON support (MarshalJSON, UnmarshalJSON)
 
 - [ ] Database/sql integration (Scan, Value for DB storage)
 

@@ -5,6 +5,8 @@ enums:
       - String
       - Normalize
       - Parse
+      - JSON
+      - SQL
     values:
       - name: LangEnglish
         display: "English"
