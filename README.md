@@ -83,7 +83,7 @@ enums:
 Then run the tool to generate the Go code:
 
 ```bash
-kd-gen enum gen --output ./example/enum/enum_gen.go --config ./example/enum/enum.yml
+kd-gen enum gen --output ./example/enum/enum_gen.go --config ./example/enum/enum.yaml
 ```
 
 ### Sample Run
