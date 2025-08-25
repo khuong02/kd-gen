@@ -17,6 +17,22 @@ const (
 	LangChinese    Lang = "Chinese"
 )
 
+func (x Lang) IsLangEnglish() bool {
+	return x == LangEnglish
+}
+func (x Lang) IsLangVietnamese() bool {
+	return x == LangVietnamese
+}
+func (x Lang) IsLangFrench() bool {
+	return x == LangFrench
+}
+func (x Lang) IsLangSpanish() bool {
+	return x == LangSpanish
+}
+func (x Lang) IsLangChinese() bool {
+	return x == LangChinese
+}
+
 var LangMap = map[Lang]interface{}{
 	LangEnglish:    "en",
 	LangVietnamese: "vi",
@@ -79,42 +95,26 @@ const (
 	Fatal
 )
 
+func (x LogLevel) IsDebug() bool {
+	return x == Debug
+}
+func (x LogLevel) IsInfo() bool {
+	return x == Info
+}
+func (x LogLevel) IsWarn() bool {
+	return x == Warn
+}
+func (x LogLevel) IsError() bool {
+	return x == Error
+}
+func (x LogLevel) IsFatal() bool {
+	return x == Fatal
+}
+
 var AllLogLevels = []LogLevel{
 	Debug,
 	Info,
 	Warn,
 	Error,
 	Fatal,
-}
-
-func (x LogLevel) String() string {
-	switch x {
-	case Debug:
-		return "Debug"
-	case Info:
-		return "Info"
-	case Warn:
-		return "Warn"
-	case Error:
-		return "Error"
-	case Fatal:
-		return "Fatal"
-	}
-	return "UNKNOWN"
-}
-
-func ParseLogLevel(s string) (LogLevel, error) {
-	switch s {
-	case "Debug":
-		return Debug, nil
-	case "Info":
-		return Info, nil
-	case "Warn":
-		return Warn, nil
-	case "Error":
-		return Error, nil
-	case "Fatal":
-		return Fatal, nil
-	}
-	return 0, fmt.Errorf("invalid LogLevel: %s", s)
 }

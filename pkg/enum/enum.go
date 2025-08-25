@@ -1,12 +1,40 @@
 package enum
 
 import (
+	"fmt"
 	"github.com/khuong02/kd-gen/config"
+	"strings"
 
 	"github.com/dave/jennifer/jen"
 )
 
 type ImportName map[string]string
+
+type Method string
+type MethodFunc func(e *Enum, name string, enumType string, values []config.EnumValue)
+
+const (
+	String    Method = "string"
+	Parse     Method = "parse"
+	Normalize Method = "normalize"
+)
+
+var MethodMap = map[Method]MethodFunc{
+	String: func(e *Enum, name string, enumType string, values []config.EnumValue) {
+		e.String(name, enumType, values)
+	},
+	Parse: func(e *Enum, name string, enumType string, values []config.EnumValue) {
+		e.Parse(name, enumType, values)
+	},
+	Normalize: func(e *Enum, name string, enumType string, values []config.EnumValue) {
+		if enumType != "string" {
+			// you can choose to log OR panic
+			fmt.Printf("⚠️  Normalize only applies to string enums (enum %s has type %s)\n", name, enumType)
+			return
+		}
+		e.Normalize(name)
+	},
+}
 
 type Enum struct {
 	f *jen.File
@@ -269,17 +297,42 @@ func (e *Enum) Normalize(name string) {
 		)
 }
 
-func (e *Enum) Enum(name, enumType string, values []config.EnumValue) {
+func (e *Enum) Is(name, enumType string, values []config.EnumValue) {
+	f := e.f
+	defer f.Line()
+	// --------------------
+	// IsX checks whether the enum equals a specific value
+	// --------------------
+	for _, v := range values {
+		f.Func().
+			Params(jen.Id("x").Id(name)).
+			Id(fmt.Sprintf("Is%s", v.Name)).
+			Params().
+			Id("bool").
+			Block(
+				jen.Return(
+					jen.Id("x").Op("==").Id(v.Name),
+				),
+			)
+	}
+}
+
+func (e *Enum) Method(name, enumType string, values []config.EnumValue, methods ...string) {
+	for _, m := range methods {
+		if fn, ok := MethodMap[Method(strings.ToLower(m))]; ok {
+			fn(e, name, enumType, values)
+		}
+	}
+}
+
+func (e *Enum) Enum(name, enumType string, values []config.EnumValue, methods []string) {
 	f := e.f
 	f.Type().Id(name).Id(enumType)
 	e.Consts(name, enumType, values)
+	e.Is(name, enumType, values)
 	e.Map(name, enumType, values)
 	e.Slice(name, enumType, values)
-	e.String(name, enumType, values)
-	if enumType == "string" {
-		e.Normalize(name)
-	}
-	e.Parse(name, enumType, values)
+	e.Method(name, enumType, values, methods...)
 }
 
 func (e *Enum) JenFile() *jen.File {

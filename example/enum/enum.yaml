@@ -1,6 +1,10 @@
 enums:
   - name: Lang
     type: string
+    methods:
+      - String
+      - Normalize
+      - Parse
     values:
       - name: LangEnglish
         display: "English"

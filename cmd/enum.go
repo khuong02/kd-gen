@@ -48,7 +48,7 @@ func enumGen(cmd *cobra.Command, args []string) error {
 	f := cli.client.JenFile()
 
 	for _, e := range cli.config.Enums {
-		cli.client.Enum(e.Name, e.Type, e.Values)
+		cli.client.Enum(e.Name, e.Type, e.Values, e.Methods)
 	}
 
 	// make sure the folder exists
