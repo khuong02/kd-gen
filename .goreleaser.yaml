@@ -27,17 +27,13 @@ brews:
     homepage: "https://github.com/khuong02/kd-gen"
     description: "A Go code generator for enums."
     license: "MIT"
-
+    install: |
+      bin.install "kd-gen"
 
 archives:
-  - formats: [tar.gz]
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
+  - format: tar.gz
+    builds: [ kd-gen ]
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
         formats: [zip]
@@ -50,6 +46,7 @@ changelog:
       - "^test:"
 
 release:
+  replace_existing_draft: true
   footer: >-
 
     ---
