@@ -36,17 +36,22 @@ go build -o kd-gen ./cmd/kd-gen
 mv kd-gen /usr/local/bin/
 ```
 
-# KD Gen
-
-A powerful Go code generation tool for creating type-safe enums from YAML configuration files.
-
-## Installation
-
 ### Using Go Install
 
 ```bash
 go install github.com/khuong02/kd-gen/cmd/kd-gen@latest
 ```
+
+### Using Homebrew
+
+You can install **KD Gen** via [Homebrew](https://brew.sh/) using a custom tap:
+
+```bash
+# Add the tap
+brew tap khuong02/tap https://github.com/khuong02/homebrew-tap
+
+# Install kd-gen
+brew install kd-gen
 
 ## Usage
 
