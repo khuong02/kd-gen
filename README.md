@@ -115,7 +115,7 @@ enums:
 EOF
 
 # Generate the enum code
-kd-gen enum generate --output status_enum.go --config enum.yaml
+kd-gen enum gen --output status_enum.go --config enum.yaml
 ```
 
 The generated file will contain:

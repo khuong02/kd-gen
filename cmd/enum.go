@@ -53,7 +53,7 @@ func enumGen(cmd *cobra.Command, args []string) error {
 
 	// make sure the folder exists
 	dir := filepath.Dir(outputFile)
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	if err := os.MkdirAll(dir, 0o750); err != nil {
 		return fmt.Errorf("mkdir: %w", err)
 	}
 

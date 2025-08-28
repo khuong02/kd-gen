@@ -32,8 +32,8 @@ var RootCmd = &cobra.Command{
 
 func init() {
 	RootCmd.PersistentFlags().StringP("config", "c", "config.yml", "Configuration file to use.")
-	viper.BindEnv("config")
-	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
+	_ = viper.BindEnv("config")
+	_ = viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
 
 	if info, ok := debug.ReadBuildInfo(); ok {
 		for _, setting := range info.Settings {
