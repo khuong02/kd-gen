@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: identity
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: master
+    hooks:
+      - id: go-fmt
+      - id: go-imports
+      - id: golangci-lint
+        args: [--config=./.golangci.yml]
+      - id: go-unit-tests
