@@ -1,0 +1,35 @@
+# This file tells GitHub which PR template to use based on branch or title
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-pull-requests/about-pull-request-templates
+
+name: "PR Templates"
+
+pull_request_templates:
+  - name: "Feature Template"
+    description: "Use for PRs with feat/*"
+    file: PULL_REQUEST_TEMPLATE/feat.md
+    conditions:
+      title: "^feat"
+
+  - name: "Fix Template"
+    description: "Use for PRs with fix/*"
+    file: PULL_REQUEST_TEMPLATE/fix.md
+    conditions:
+      title: "^fix"
+
+  - name: "Hotfix Template"
+    description: "Use for PRs with hotfix/*"
+    file: PULL_REQUEST_TEMPLATE/hotfix.md
+    conditions:
+      title: "^hotfix"
+
+  - name: "Infra Template"
+    description: "Use for PRs with infra/*"
+    file: PULL_REQUEST_TEMPLATE/infra.md
+    conditions:
+      title: "^infra"
+
+  - name: "Release Template"
+    description: "Use for PRs with release/*"
+    file: PULL_REQUEST_TEMPLATE/release.md
+    conditions:
+      title: "^release"
