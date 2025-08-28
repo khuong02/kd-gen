@@ -1,0 +1,39 @@
+name: PR Template
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  apply-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            let template = "";
+
+            if (title.startsWith("feat:")) {
+              template = "feat.md";
+            } else if (title.startsWith("fix:")) {
+              template = "fix.md";
+            } else if (title.startsWith("hotfix:")) {
+              template = "hotfix.md";
+            } else if (title.startsWith("infra:")) {
+              template = "infra.md";
+            } else if (title.startsWith("release:")) {
+              template = "release.md";
+            }
+
+            if (template) {
+              const fs = require('fs');
+              const body = fs.readFileSync(`.github/PULL_REQUEST_TEMPLATE/${template}`, 'utf8');
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                body: body
+              });
+            }
