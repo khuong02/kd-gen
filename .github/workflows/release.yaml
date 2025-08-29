@@ -28,3 +28,15 @@ jobs:
           args: release
         env:
           GITHUB_TOKEN: ${{ secrets.GORELEASER_TOKEN }}
+
+      - name: Create summary
+        if: always()
+        run: |
+          echo "## 🚀 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tag**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ steps.goreleaser.outcome }}" == "success" ]]; then
+            echo "- **GoReleaser**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **GoReleaser**: ❌ Failed" >> $GITHUB_STEP_SUMMARY
+          fi
