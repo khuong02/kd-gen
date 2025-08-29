@@ -4,7 +4,7 @@ A powerful Go code generation tool for creating type-safe enums from YAML config
 
 ## Overview
 
-**KD Gen** is a CLI tool that generates Go enum types with useful helper methods from YAML configuration files.  
+**KD Gen** is a CLI tool that generates Go enum types with useful helper methods from YAML configuration files.
 It helps you create type-safe enums with string representations, parsing functions, and more.
 
 ## ✨ Features Roadmap
@@ -20,7 +20,7 @@ It helps you create type-safe enums with string representations, parsing functio
 
 ## Go Version
 
-This project is developed using **Go 1.25.0**.  
+This project is developed using **Go 1.25.0**.
 It should work with other recent Go versions as well.
 
 ## Libraries Used
@@ -45,6 +45,16 @@ go build -o kd-gen ./cmd/kd-gen
 
 # Optional: Move to a directory in your PATH
 mv kd-gen /usr/local/bin/
+```
+
+### Using docker
+```bash
+# Build image
+docker build -t kd-gen .
+
+# Run
+docker run --rm -v $(pwd):/app -w /app kd-gen \
+  enum gen --output ./example/enum/enum_gen.go --config ./example/enum/enum.yaml
 ```
 
 ### Using Go Install
