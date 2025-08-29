@@ -72,16 +72,16 @@ func (x Lang) Normalize() Lang {
 }
 
 func ParseLang(s string) (Lang, error) {
-	switch s {
-	case "English":
+	switch strings.ToLower(s) {
+	case "english":
 		return LangEnglish, nil
-	case "Vietnamese":
+	case "vietnamese":
 		return LangVietnamese, nil
-	case "French":
+	case "french":
 		return LangFrench, nil
-	case "Spanish":
+	case "spanish":
 		return LangSpanish, nil
-	case "Chinese":
+	case "chinese":
 		return LangChinese, nil
 	}
 	return "", fmt.Errorf("invalid Lang: %s", s)
