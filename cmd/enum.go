@@ -2,17 +2,19 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/khuong02/kd-gen/config"
-	"github.com/khuong02/kd-gen/pkg/enum"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/khuong02/kd-gen/config"
+	"github.com/khuong02/kd-gen/pkg/enum"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
 	outputFile string
+	pkgName    string
 )
 
 var apiKeyCmd = &cobra.Command{
@@ -23,7 +25,7 @@ var apiKeyCmd = &cobra.Command{
 var apiKeyCreateCmd = &cobra.Command{
 	Use:          "gen (output-file)",
 	Short:        "Generate enum from YAML config",
-	Example:      "enum gen --output ./pkg/core/enum_gen.go",
+	Example:      "enum gen --package core --config ./example/enum/enum.yaml --output ./pkg/core/enum_gen.go",
 	SilenceUsage: true,
 	RunE:         enumGen,
 	Args:         cobra.NoArgs,
@@ -34,9 +36,14 @@ func init() {
 	apiKeyCmd.AddCommand(apiKeyCreateCmd)
 
 	apiKeyCreateCmd.Flags().StringVarP(&outputFile, "output", "o", "./pkg/core/enum_gen.go", "Output file path")
+	apiKeyCreateCmd.Flags().StringVarP(&pkgName, "package", "p", "core", "Package name")
 }
 
 func enumGen(cmd *cobra.Command, args []string) error {
+	if strings.TrimSpace(pkgName) == "" {
+		return fmt.Errorf("package name is required")
+	}
+
 	cli := setupEnumCLI()
 
 	cli.client.HeaderComment()
@@ -75,6 +82,6 @@ func setupEnumCLI() EnumCLI {
 	configPath := viper.GetString("config")
 	c := config.NewConfig(configPath)
 	w.config = c
-	w.client = enum.New()
+	w.client = enum.New(pkgName)
 	return w
 }

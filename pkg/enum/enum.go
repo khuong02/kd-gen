@@ -2,8 +2,9 @@ package enum
 
 import (
 	"fmt"
-	"github.com/khuong02/kd-gen/config"
 	"strings"
+
+	"github.com/khuong02/kd-gen/config"
 
 	"github.com/dave/jennifer/jen"
 )
@@ -48,9 +49,9 @@ type Enum struct {
 	f *jen.File
 }
 
-func New() *Enum {
+func New(packageName string) *Enum {
 	return &Enum{
-		f: jen.NewFile("core"),
+		f: jen.NewFile(packageName),
 	}
 }
 

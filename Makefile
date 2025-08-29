@@ -1,4 +1,4 @@
-.PHONY: fmt lint sec
+.PHONY: fmt lint sec goimports
 
 sec:
 	@echo "Running lint"
@@ -14,3 +14,6 @@ fmt:
 	@echo "Running gofmt..."
 	gofmt -w .
 	@echo "Done."
+
+goimports:
+	@goimports -w .

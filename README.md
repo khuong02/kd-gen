@@ -54,7 +54,7 @@ docker build -t kd-gen .
 
 # Run
 docker run --rm -v $(pwd):/app -w /app kd-gen \
-  enum gen --output ./example/enum/enum_gen.go --config ./example/enum/enum.yaml
+  enum gen --package core --output ./example/enum/enum_gen.go --config ./example/enum/enum.yaml
 ```
 
 ### Using Go Install
@@ -104,7 +104,7 @@ enums:
 Then run the tool to generate the Go code:
 
 ```bash
-kd-gen enum gen --output ./example/enum/enum_gen.go --config ./example/enum/enum.yaml
+kd-gen enum gen --package core --output ./example/enum/enum_gen.go --config ./example/enum/enum.yaml
 ```
 
 ### Sample Run
@@ -125,7 +125,7 @@ enums:
 EOF
 
 # Generate the enum code
-kd-gen enum gen --output status_enum.go --config enum.yaml
+kd-gen enum gen --package core --output status_enum.go --config enum.yaml
 ```
 
 The generated file will contain:

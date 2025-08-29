@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/khuong02/kd-gen/cmd"
 	"os"
+
+	"github.com/khuong02/kd-gen/cmd"
 )
 
 func main() {

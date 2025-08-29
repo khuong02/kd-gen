@@ -2,6 +2,7 @@ package enum
 
 import (
 	"fmt"
+
 	"github.com/dave/jennifer/jen"
 	"github.com/khuong02/kd-gen/config"
 )
