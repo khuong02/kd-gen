@@ -1,6 +1,8 @@
 package enum
 
 import (
+	"strings"
+
 	"github.com/dave/jennifer/jen"
 	"github.com/khuong02/kd-gen/config"
 )
@@ -39,9 +41,15 @@ func (e *Enum) Parse(name, enumType string, values []config.EnumValue) {
 		Params(jen.Id("s").String()).
 		Params(jen.Id(name), jen.Error()).
 		Block(
-			jen.Switch(jen.Id("s")).BlockFunc(func(g *jen.Group) {
+			jen.Switch(jen.Qual("strings", "ToLower").Call(jen.Id("s"))).BlockFunc(func(g *jen.Group) {
 				for _, v := range values {
-					g.Case(jen.Lit(displayValue(v.Display, v.Name))).Return(jen.Id(v.Name), jen.Nil())
+					value := displayValue(v.Display, v.Name)
+					if str, ok := value.(string); ok {
+						g.Case(jen.Lit(strings.ToLower(str))).Return(jen.Id(v.Name), jen.Nil())
+					} else {
+						g.Case(jen.Lit(value)).Return(jen.Id(v.Name), jen.Nil())
+					}
+
 				}
 			}),
 			jen.Return(
