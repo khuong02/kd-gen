@@ -54,7 +54,7 @@ docker run --rm -v $(pwd):/app -w /app kd-gen \
 ### Using Go Install
 
 ```bash
-go install github.com/khuong02/kd-gen/cmd/kd-gen@latest
+go install github.com/khuong02/kd-gen@latest
 ```
 
 ### Using Homebrew
