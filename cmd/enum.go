@@ -17,12 +17,12 @@ var (
 	pkgName    string
 )
 
-var apiKeyCmd = &cobra.Command{
+var enumCmd = &cobra.Command{
 	Use:   "enum",
 	Short: "Commands for managing Enum",
 }
 
-var apiKeyCreateCmd = &cobra.Command{
+var enumGenCmd = &cobra.Command{
 	Use:          "gen (output-file)",
 	Short:        "Generate enum from YAML config",
 	Example:      "enum gen --package core --config ./example/enum/enum.yaml --output ./pkg/core/enum_gen.go",
@@ -32,11 +32,11 @@ var apiKeyCreateCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(apiKeyCmd)
-	apiKeyCmd.AddCommand(apiKeyCreateCmd)
+	RootCmd.AddCommand(enumCmd)
+	enumCmd.AddCommand(enumGenCmd)
 
-	apiKeyCreateCmd.Flags().StringVarP(&outputFile, "output", "o", "./pkg/core/enum_gen.go", "Output file path")
-	apiKeyCreateCmd.Flags().StringVarP(&pkgName, "package", "p", "core", "Package name")
+	enumGenCmd.Flags().StringVarP(&outputFile, "output", "o", "./pkg/core/enum_gen.go", "Output file path")
+	enumGenCmd.Flags().StringVarP(&pkgName, "package", "p", "core", "Package name")
 }
 
 func enumGen(cmd *cobra.Command, args []string) error {
