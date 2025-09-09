@@ -35,10 +35,10 @@ git clone https://github.com/khuong02/kd-gen.git
 cd kd-gen
 
 # Build the binary
-go build -o kd-gen ./cmd/kd-gen
+go build -o ./build/kd-gen main.go
 
 # Optional: Move to a directory in your PATH
-mv kd-gen /usr/local/bin/
+mv ./build/kd-gen /usr/local/bin/
 ```
 
 ### Using docker
@@ -158,6 +158,13 @@ enums:
         display: "Display"  # String representation (optional)
         code: value         # Associated value (optional)
 ```
+
+---
+## 🔌 MCP Integration
+
+This project can also be used as an [MCP server](https://modelcontextprotocol.io/) so Claude Desktop can call its tools directly.
+
+👉 See [MCP_GUIDE.md](./MCP_GUIDE.md) for full setup instructions.
 
 ---
 

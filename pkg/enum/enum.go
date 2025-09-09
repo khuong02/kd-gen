@@ -22,6 +22,14 @@ const (
 	SQL       Method = "sql"
 )
 
+var MethodDescriptions = map[Method]string{
+	String:    "Generate enums as Go string constants with helper functions",
+	Parse:     "Generate parsing functions to convert strings into enum values",
+	Normalize: "Generate normalization helpers (e.g., case-insensitive matching)",
+	JSON:      "Add JSON marshal/unmarshal support for enums",
+	SQL:       "Add SQL database scan/value support for enums",
+}
+
 var MethodMap = map[Method]MethodFunc{
 	String: func(e *Enum, name string, enumType string, values []config.EnumValue) {
 		e.String(name, enumType, values)
