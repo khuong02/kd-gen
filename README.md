@@ -8,9 +8,26 @@ A powerful Go code generation tool for creating type-safe enums from YAML config
 It helps you create type-safe enums with string representations, parsing functions, and more.
 
 ## ✨ Features
+### V1
 - [x] Generate type-safe enums (int, string, uint64, …)
 - [x] JSON support (MarshalJSON, UnmarshalJSON)
 - [x] Database/sql integration (Scan, Value for DB storage)
+
+### V2
+- [ ] MCP Tools → expose enum generation as interactive tools:
+
+### Tools
+| Tool                    | Category | Description                                                                |
+| ----------------------- | -------- | -------------------------------------------------------------------------- |
+| `list_methods`          | Enum     | List all supported enum generation methods with descriptions.              |
+| `show_config_structure` | Config   | Show the YAML structure for a valid enum configuration file.               |
+| `example_config`        | Config   | Generate an example enum config file for a given type (e.g., string, int). |
+| `validate_config`       | Config   | Validate an enum YAML config against schema and supported types.           |
+| `generate_enum`         | Codegen  | Generate Go enum code from a provided YAML configuration.                  |
+| `explain_enum`          | Docs     | Explain what a given enum config means and how it maps to generated code.  |
+| `diff_config`           | Utility  | Compare two enum YAML config files and show the differences.               |
+| `format_config`         | Utility  | Format and normalize enum YAML config files.                               |
+
 
 ## Go Version
 
@@ -24,6 +41,7 @@ It should work with other recent Go versions as well.
 - [github.com/spf13/viper](https://github.com/spf13/viper) – Configuration management
 - [github.com/mitchellh/mapstructure](https://github.com/mitchellh/mapstructure) – Decode generic map values to Go structs
 - [github.com/shopspring/decimal](https://github.com/shopspring/decimal) – Arbitrary-precision fixed-point decimal numbers
+- [github.com/mark3labs/mcp-go](https://github.com/mark3labs/mcp-go) - A Go implementation of the Model Context Protocol (MCP), enabling seamless integration between LLM applications and external data sources and tools.
 
 ## Installation
 
@@ -174,22 +192,12 @@ This project can also be used as an [MCP server](https://modelcontextprotocol.io
 
 ---
 
-## Build and Distribution
+## 📚 References
 
-The project uses **GoReleaser** for building and distributing binaries for multiple platforms:
-
-```bash
-# Install GoReleaser
-go install github.com/goreleaser/goreleaser@latest
-
-# Build for development
-goreleaser build --snapshot --clean
-
-# Release a new version
-git tag v0.1.0
-git push origin v0.1.0
-goreleaser release
-```
+| Project      | Purpose                                           |
+|--------------|---------------------------------------------------|
+| [mcp-go](https://github.com/mark3labs/mcp-go) | Go implementation of the Model Context Protocol. |
+| [mcp-grafana](https://github.com/grafana/mcp-grafana/tree/main) | Example MCP server integrating with Grafana. |
 
 ---
 
