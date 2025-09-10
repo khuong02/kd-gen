@@ -25,16 +25,9 @@ enums:
         code: "zh"
   - name: LogLevel
     type: int
-    methods:
-      - String
     values:
       - name: Debug
-        display: "debug"
       - name: Info
-        display: "debug"
       - name: Warn
-        display: "debug"
       - name: Error
-        display: "debug"
       - name: Fatal
-        display: "debug"
