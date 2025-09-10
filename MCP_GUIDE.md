@@ -5,11 +5,11 @@ This project can be used as an [MCP server](https://modelcontextprotocol.io/) so
 
 **Claude Desktop looks for a file named claude_desktop_config.json.**
 
-- macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-- Linux: ~/.config/Claude/claude_desktop_config.json
+- Linux: `~/.config/Claude/claude_desktop_config.json`
 
-- Windows: %APPDATA%\Claude\claude_desktop_config.json
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
 **Edit the file and add the MCP server:**
 
