@@ -96,6 +96,8 @@ Create a YAML configuration file defining your enums:
 enums:
   - name: Lang
     type: string
+    methods:
+    - String|Parse|Normalize|JSON|SQL
     values:
       - name: LangEnglish
         display: "English"
@@ -127,6 +129,8 @@ cat > enum.yaml << EOF
 enums:
   - name: Status
     type: string
+    methods:
+    - String
     values:
       - name: StatusActive
         display: "active"
