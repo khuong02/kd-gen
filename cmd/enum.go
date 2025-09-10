@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -68,7 +69,7 @@ func enumGen(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("save file: %w", err)
 	}
 
-	fmt.Printf("✅ Generated enums to %s\n", outputFile)
+	slog.Info("Generated enums to", "path", outputFile)
 	return nil
 }
 
