@@ -2,6 +2,7 @@ package enum
 
 import (
 	"fmt"
+	"log/slog"
 	"strings"
 
 	"github.com/khuong02/kd-gen/config"
@@ -40,7 +41,7 @@ var MethodMap = map[Method]MethodFunc{
 	Normalize: func(e *Enum, name string, enumType string, values []config.EnumValue) {
 		if enumType != "string" {
 			// you can choose to log OR panic
-			fmt.Printf("⚠️  Normalize only applies to string enums (enum %s has type %s)\n", name, enumType)
+			slog.Info("Normalize only applies to string enums", "enum", name, "has type", enumType)
 			return
 		}
 		e.Normalize(name)
@@ -106,7 +107,7 @@ func (e *Enum) Method(name, enumType string, values []config.EnumValue, methods 
 		if fn, ok := MethodMap[Method(strings.ToLower(m))]; ok {
 			fn(e, name, enumType, values)
 		} else {
-			fmt.Printf("don't support method %s\n", m)
+			slog.Info(fmt.Sprintf("don't support method: %v", m))
 		}
 	}
 }

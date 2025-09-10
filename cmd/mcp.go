@@ -60,7 +60,7 @@ func run(transport string) error {
 	// Handle shutdown signals
 	go func() {
 		<-sigChan
-		fmt.Println("Received shutdown signal")
+		slog.Info("Received shutdown signal")
 		//cancel()
 
 		// For stdio, close stdin to unblock the Listen call
