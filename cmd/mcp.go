@@ -42,6 +42,7 @@ func newServer() *server.MCPServer {
 	`))
 
 	maybeAddTools(s, tools.AddListMethodsTool)
+	maybeAddTools(s, tools.AddShowConfigStructureTool)
 	return s
 }
 
