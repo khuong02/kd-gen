@@ -152,11 +152,17 @@ For each enum defined in your YAML file, the tool generates:
 ```yaml
 enums:
   - name: EnumName      # Name of the enum type
+    methods:
+    - string
+    - parse
+    - normalize
+    - json
+    - sql
     type: string|int    # Type of the enum (string, int, etc.)
     values:
       - name: ValueName     # Name of the enum constant
         display: "Display"  # String representation (optional)
-        code: value         # Associated value (optional)
+        code: value         # Optional "Code" field → supports multiple types:
 ```
 
 ---
