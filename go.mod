@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/dave/jennifer v1.7.1
 	github.com/invopop/jsonschema v0.13.0
-	github.com/mark3labs/mcp-go v0.39.1
+	github.com/mark3labs/mcp-go v0.41.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/spf13/cobra v1.10.1
